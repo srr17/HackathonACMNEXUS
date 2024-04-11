@@ -37,7 +37,7 @@ def login():
 def forgot_password_farmer():
     return render_template('forgot_password_farmer.html')
 
-
+#see
 @app.route('/signup')
 def signup():
     return redirect(url_for('signup.html'))
