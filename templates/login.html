@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 400px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"], input[type="submit"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .forgot-password {
+            text-align: right;
+            font-size: 14px;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <div class="existing-users">
+            <div class="section-title">Existing Users</div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="farmer_login">Farmer Login</label>
+                    <form action="/farmer_login" method="post">
+                        <input type="text" id="farmer_username" name="farmer_username" placeholder="Username" required>
+                        <input type="password" id="farmer_password" name="farmer_password" placeholder="Password" required>
+                        <input type="submit" value="Login as Farmer">
+                    </form>
+                    <a href="/forgot_password_farmer" class="forgot-password">Forgot Password?</a>
+                </div>
+                <div class="form-group">
+                    <label for="consumer_login">Consumer Login</label>
+                    <form action="/consumer_login" method="post">
+                        <input type="text" id="consumer_username" name="consumer_username" placeholder="Username" required>
+                        <input type="password" id="consumer_password" name="consumer_password" placeholder="Password" required>
+                        <input type="submit" value="Login as Consumer">
+                    </form>
+                    <a href="/forgot_password_farmer" class="forgot-password">Forgot Password?</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="new-user">
+            <div class="section-title">New User</div>
+            <p>Create a new account to get started.</p>
+            <a href="/signup" class="signup-link">Sign Up</a>
+        </div>
+    </div>
+</body>
+
+</html>
