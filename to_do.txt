@@ -1,0 +1,4 @@
+1.image not showing
+2.make templates better
+3.routing forgot_password to resseted.html
+4.integrate mysql database
