@@ -43,8 +43,18 @@ class UserCredential(db.Model):
     def __repr__(self):
         return f'<User ID: {self.user_id}>'
 
-# class Cart(db.Model):
-#     pass
+class Cart(db.Model):
+    cart_entry_id = db.Column(db.Integer, primary_key=True)
+    consumer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'), nullable=False)
+
+    def __init__(self, user_id: int, product_id: int) -> None:
+        self.cart_entry_id=int(datetime.timestamp(datetime.now()))
+        self.consumer_id=user_id
+        self.product_id=product_id
+
+    def __repr__(self):
+        return f'<Consumer ID: {self.user_id}, Product: {self.product_id}>'
 
 # class Messages(db.Model):
 #     pass
@@ -169,7 +179,6 @@ def farmer_dashboard():
 
 @app.route('/add_listing', methods=['POST'])
 def add_farmer_product():
-    print("Within add product")
     farmer: User = User.query.filter_by(user_name=session['username'], user_type=session['user_type']).first_or_404()
     product = request.form['product']
     price = float(request.form['quantity'])
@@ -179,18 +188,26 @@ def add_farmer_product():
     db.session.commit()
     return redirect('/farmer/dashboard')
 
-
-
-
 @app.route('/consumer/dashboard')
 def consumer_dashboard():
     print(f"Session: {session}")
     if 'username' in session and session['user_type'] == 'consumer':
         username = session['username']
         products = Products.query.all()
-        return render_template('consumer/dashboard.html', username=username, products=products)
+        cart_product_ids = set([product.product_id for product in Cart.query.filter_by(consumer_id=session['user_id']).all()])
+        cart_products = [product for product in products if product.product_id in cart_product_ids]
+        return render_template('consumer/dashboard.html', username=username, products=products, cart_products=cart_products)
     else:
         return redirect(url_for('login'))
+
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    consumer: User = User.query.filter_by(user_name=session['username'], user_type=session['user_type']).first_or_404()
+    product_id = int(request.form['product_id'])
+    new_cart_entry = Cart(user_id=consumer.user_id, product_id=product_id)
+    db.session.add(new_cart_entry)
+    db.session.commit()
+    return redirect('/consumer/dashboard')
 
 if __name__ == '__main__':
     app.run(debug=True)

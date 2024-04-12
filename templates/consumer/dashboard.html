@@ -61,9 +61,27 @@
                     <strong>Price:</strong> ${{ product.price }} <br>
                     <strong>Quantity:</strong> {{ product.quantity }} <br>
                     <!-- Add any other product details you want to display -->
-                    <form action="/remove_product" method="POST">
+                    <form action="/add_to_cart" method="POST">
                         <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                        <button type="submit">Remove</button>
+                        <button type="submit">+</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+    <!-- Include any necessary JavaScript scripts here -->
+        </div>
+        <div>
+            <h2>Cart</h2>
+            <ul>
+                {% for product in cart_products %}
+                <li>
+                    <strong>Product Name:</strong> {{ product.product_name }} <br>
+                    <strong>Price:</strong> ${{ product.price }} <br>
+                    <strong>Quantity:</strong> {{ product.quantity }} <br>
+                    <!-- Add any other product details you want to display -->
+                    <form action="/remove_from_cart" method="POST">
+                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                        <button type="submit">-</button>
                     </form>
                 </li>
                 {% endfor %}
