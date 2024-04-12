@@ -120,7 +120,7 @@
 
             <label for="price">Price:</label>
             <input type="number" id="price" name="price" required>
-            
+
             <label for="image">Image:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
 
@@ -128,6 +128,18 @@
         </form>
         <br>
         <p><a href="/logout">Logout</a></p>
+        <h2>Product List</h2>
+        <ul>
+            {% for product in products %}
+            <li>
+                <strong>Product Name:</strong> {{ product.product_name }} <br>
+                <strong>Price:</strong> ${{ product.price }} <br>
+                <strong>Quantity:</strong> {{ product.quantity }} <br>
+                <!-- Add any other product details you want to display -->
+            </li>
+            {% endfor %}
+        </ul>
+        <!-- Include any necessary JavaScript scripts here -->
     </div>
 </body>
 </html>

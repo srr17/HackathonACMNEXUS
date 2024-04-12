@@ -1,3 +1,4 @@
+from cgi import print_exception
 from email import message
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
@@ -41,6 +42,31 @@ class UserCredential(db.Model):
 
     def __repr__(self):
         return f'<User ID: {self.user_id}>'
+
+# class Cart(db.Model):
+#     pass
+
+# class Messages(db.Model):
+#     pass
+
+class Products(db.Model):
+    product_id = db.Column(db.Integer, primary_key=True)
+    farmer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    product_name = db.Column(db.String(20), nullable=False)
+    price = db.Column(db.Float(20), nullable=False)
+    quantity = db.Column(db.Float(20), nullable=False)
+
+    def __init__(self, farmer_id: int, name: str, price: float, quantity: float) -> None:
+        self.farmer_id = farmer_id
+        self.product_id = int(datetime.timestamp(datetime.now()))
+        self.product_name = name
+        self.price = price
+        self.quantity = quantity
+
+    def __repr__(self) -> str:
+        return f"Product: {self.product_name}, Price: {self.price}, Qty: {self.quantity}"
+
+
 
 with app.app_context():
     db.create_all()
@@ -125,6 +151,7 @@ def reset_password():
 
 @app.route('/logout')
 def logout():
+    session.pop('user_id', None)
     session.pop('username', None)
     session.pop('user_type', None)
     return redirect('/')
@@ -134,16 +161,34 @@ def farmer_dashboard():
     print(f"Session: {session}")
     if 'username' in session and session['user_type'] == 'farmer':
         username = session['username']
-        return render_template('farmer/dashboard.html', username=username)
+        user_id = int(session['user_id'])
+        products = Products.query.filter_by(farmer_id=user_id)
+        return render_template('farmer/dashboard.html', username=username, products=products)
     else:
         return redirect(url_for('login'))
+
+@app.route('/add_listing', methods=['POST'])
+def add_farmer_product():
+    print("Within add product")
+    farmer: User = User.query.filter_by(user_name=session['username'], user_type=session['user_type']).first_or_404()
+    product = request.form['product']
+    price = float(request.form['quantity'])
+    quantity = float(request.form['price'])
+    new_product = Products(farmer_id=farmer.user_id, name=product, price=price, quantity=quantity)
+    db.session.add(new_product)
+    db.session.commit()
+    return redirect('/farmer/dashboard')
+
+
+
 
 @app.route('/consumer/dashboard')
 def consumer_dashboard():
     print(f"Session: {session}")
     if 'username' in session and session['user_type'] == 'consumer':
         username = session['username']
-        return render_template('consumer/dashboard.html', username=username)
+        products = Products.query.all()
+        return render_template('consumer/dashboard.html', username=username, products=products)
     else:
         return redirect(url_for('login'))
 
