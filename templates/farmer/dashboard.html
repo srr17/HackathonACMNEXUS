@@ -13,16 +13,9 @@
             background-size: cover;
             background-repeat: no-repeat;
             display: flex;
-            justify-content: center;
+            justify-content: space-between; /* Align items on either side */
             align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            max-width: 800px; /* Increased max-width for better spacing */
-            margin: 50px auto;
-            display: flex; /* Added to enable flexbox layout */
-            flex-direction: column; /* Stack children vertically */
+            min-height: 100vh; /* Ensure full height */
         }
 
         .form-container {
@@ -31,7 +24,7 @@
             border-radius: 20px; /* Increased border-radius for rounded corners */
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
             text-align: center;
-            margin-bottom: 20px;
+            width: 40%; /* Adjust width as needed */
         }
 
         .product-list-container {
@@ -39,8 +32,8 @@
             padding: 20px;
             border-radius: 20px; /* Increased border-radius for rounded corners */
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
-            align-self: flex-end; /* Align to the right side */
-            width: 300px; /* Adjust width as needed */
+            text-align: center;
+            width: 40%; /* Adjust width as needed */
         }
 
         h1 {
@@ -107,40 +100,38 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-container">
-            <h1>Farmer Dashboard</h1>
-            <form action="/add_listing" method="post" enctype="multipart/form-data">
-                <label for="product">Product:</label>
-                <input type="text" id="product" name="product" required>
+    <div class="form-container">
+        <h1>Farmer Dashboard</h1>
+        <form action="/add_listing" method="post" enctype="multipart/form-data">
+            <label for="product">Product:</label>
+            <input type="text" id="product" name="product" required>
 
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" required>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required>
 
-                <label for="price">Price:</label>
-                <input type="number" id="price" name="price" required>
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" required>
 
-                <label for="image">Image:</label>
-                <input type="file" id="image" name="image" accept="image/*" required>
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
 
-                <input type="submit" value="Add Listing">
-            </form>
-            <br>
-            <p><a href="/logout">Logout</a></p>
-        </div>
-        <div class="product-list-container">
-            <h2>Product List</h2>
-            <ul>
-                {% for product in products %}
-                <li>
-                    <strong>Product Name:</strong> {{ product.product_name }} <br>
-                    <strong>Price:</strong> ₹{{ product.price }} <br>
-                    <strong>Quantity:</strong> {{ product.quantity }} <br>
-                    <!-- Add any other product details you want to display -->
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+            <input type="submit" value="Add Listing">
+        </form>
+        <br>
+        <p><a href="/logout">Logout</a></p>
+    </div>
+    <div class="product-list-container">
+        <h2>Product List</h2>
+        <ul>
+            {% for product in products %}
+            <li>
+                <strong>Product Name:</strong> {{ product.product_name }} <br>
+                <strong>Price:</strong> ₹{{ product.price }} <br>
+                <strong>Quantity:</strong> {{ product.quantity }} <br>
+                <!-- Add any other product details you want to display -->
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>
