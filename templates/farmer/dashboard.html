@@ -51,9 +51,9 @@
         input[type="number"],
         input[type="file"],
         input[type="submit"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #c6ccba;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 20px;
@@ -67,44 +67,27 @@
             cursor: pointer;
             transition: background-color 0.3s;
             font-size: 1.1rem;
-            padding: 12px;
         }
 
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
 
-        /* Additional styling for the 'Area' field */
-        input[type="Area"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            width: calc(100% - 20px); /* Adjusted width to accommodate the padding */
-            box-sizing: border-box;
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
             margin-bottom: 20px;
-            font-size: 1rem;
-        }
-
-        /* Styling for the 'Add Listing' button */
-        input[type="submit"] {
-            background-color: #ffffff; /* Green */
-            border: none;
-            color: rgb(112, 159, 104);
-            padding: 16px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
+            padding: 20px;
             border-radius: 8px;
-            width: 50%; /* Set button width */
-            box-sizing: border-box;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
         }
 
-        input[type="submit"]:hover {
-            background-color: #45a049; /* Darker green on hover */
+        ul li:hover {
+            background-color: #f0f0f0;
         }
     </style>
 </head>
@@ -133,13 +116,12 @@
             {% for product in products %}
             <li>
                 <strong>Product Name:</strong> {{ product.product_name }} <br>
-                <strong>Price:</strong> ${{ product.price }} <br>
+                <strong>Price:</strong> ₹{{ product.price }} <br>
                 <strong>Quantity:</strong> {{ product.quantity }} <br>
                 <!-- Add any other product details you want to display -->
             </li>
             {% endfor %}
         </ul>
-        <!-- Include any necessary JavaScript scripts here -->
     </div>
 </body>
 </html>
