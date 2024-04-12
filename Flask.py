@@ -83,9 +83,9 @@ def login():
         return render_template('login.html')
 
 
-@app.route('/forgot_password_farmer')
+@app.route('/forgot_password')
 def forgot_password_farmer():
-    return render_template('forgot_password_farmer.html')
+    return render_template('forgot_password.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

@@ -3,18 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title style="font-family:'Roboto',sans-serif;">Consumer Dashboard</title>
+    <title>Consumer Dashboard</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2ecc71; /* Green background color */
+            color: #fff; /* White text color */
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1, h2, p {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #fff; /* White color for links */
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #ecf0f1; /* Lighter shade of white on hover */
+        }
+    </style>
 </head>
-<body style="background-image:url("A.jpg");
-background-size:100% ;
-background-attachment-fixed;
-background-repeat: no-repeat;">
-   
-    <h1 style="font-family:'Roboto',sans-serif;">Welcome, {{ username }}!</h1>
-    <h2>Consumer Dashboard</h2>
-    <p style="font-family:'Roboto',sans-serif;">This is your dashboard. You can search for produce and make purchases here.</p>
-    <br>
-    
-    <p align="center"><a href="/logout">Logout</a></p>
+<body>
+    <div class="container">
+        <h1>Welcome, {{ username }}!</h1>\
+        <p>This is your dashboard. You can search for produce and make purchases here.</p>
+        <br>
+        <p><a href="/logout">Logout</a></p>
+    </div>
 </body>
 </html>
