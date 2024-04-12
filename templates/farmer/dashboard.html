@@ -19,13 +19,15 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px; /* Increased max-width for better spacing */
             margin: 50px auto;
             background-color: rgba(255, 255, 255, 0.8);
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 20px; /* Increased border-radius for rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
             text-align: center;
+            display: flex; /* Added to enable flexbox layout */
+            flex-direction: column; /* Stack children vertically */
         }
 
         h1 {
@@ -76,6 +78,7 @@
         ul {
             list-style: none;
             padding: 0;
+            margin-left: auto; /* Push product list to the right */
         }
 
         ul li {
