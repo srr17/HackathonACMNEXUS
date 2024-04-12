@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farm to Table Connect</title>
     <style>
-    body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image = "{{ url_for('static', filename='images/farmer.jpg') }}" /* Specify the URL of your background image */
+            background-image: url("{{ url_for('static', filename='images/plant.jpg') }}");
             background-size: cover;
             background-position: center;
             color: #fff;
@@ -67,7 +67,7 @@
         }
         /* Styling for sustainable eating habits section */
         .tips-section {
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            background-color: rgba(220, 216, 216, 0.8); /* Semi-transparent white background */
             padding: 20px;
             border-radius: 10px;
             margin-top: 50px; /* Adjust as needed */
@@ -84,9 +84,10 @@
     </style>
 </head>
 <body>
+    
     <div class="overlay">
-        <img src="{{ url_for('static', filename='images/farmer.jpg') }}" alt="Farmer Image" class="farmer-image">
-        <img src="{{ url_for('static', filename='images/fruit.jpg') }}" alt="Consumer Image" class="consumer-image">
+        <!-- <img src="{{ url_for('static', filename='images/farmer.jpg') }}" alt="Farmer Image" class="farmer-image"> -->
+        <!-- <img src="{{ url_for('static', filename='images/fruit.jpg') }}" alt="Consumer Image" class="consumer-image"> -->
         <div class="container">
             <h1>Welcome to Farm to Table Connect</h1>
             <p>A simple connection of farmers to consumers to avoid food wastage</p>

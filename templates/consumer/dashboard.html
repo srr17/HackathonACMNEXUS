@@ -9,14 +9,16 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #2ecc71; /* Green background color */
-            color: #fff; /* White text color */
+            background-image: url("{{ url_for('static', filename='images/c.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: #4b4b4b; /* White text color */
         }
         .container {
             max-width: 600px;
             margin: 50px auto;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            background-color: rgba(134, 131, 131, 0.8); /* Semi-transparent white background */
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
@@ -25,20 +27,22 @@
             margin-bottom: 20px;
         }
         a {
-            color: #fff; /* White color for links */
+            color: #000000; /* White color for links */
             text-decoration: none;
             transition: color 0.3s;
         }
         a:hover {
-            color: #ecf0f1; /* Lighter shade of white on hover */
+            color: #fffb00; /* Lighter shade of white on hover */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Welcome, {{ username }}!</h1>\
+        <h1>Welcome, {{ username }}!</h1>
         <p>This is your dashboard. You can search for produce and make purchases here.</p>
         <br>
+        <p><a href="/cart">View Cart</a></p>
+        <p><a href="/checkout">Proceed to Checkout</a></p>
         <p><a href="/logout">Logout</a></p>
     </div>
 </body>
