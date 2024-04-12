@@ -56,6 +56,11 @@
     <div class="container">
         <h1>Sign Up !!! </h1>
         <form action="/signup" method="post">
+            <select id="dropdown1" name="user_type">
+                <option value="farmer" selected>Farmer</option>
+                <option value="consumer">Consumer</option>
+            </select>
+            <br>
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>

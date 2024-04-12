@@ -2,4 +2,4 @@
 - [x] image not showing
 - [ ] make templates better
 - [ ] routing forgot_password to resseted.html
-- [ ] integrate mysql database
+- [x] integrate mysql database

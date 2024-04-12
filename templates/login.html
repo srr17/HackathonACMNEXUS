@@ -73,20 +73,16 @@
             <div class="section-title">Existing Users</div>
             <div class="login-form">
                 <div class="form-group">
-                    <label for="farmer_login">Farmer Login</label>
-                    <form action="/farmer_login" method="post">
-                        <input type="text" id="farmer_username" name="farmer_username" placeholder="Username" required>
-                        <input type="password" id="farmer_password" name="farmer_password" placeholder="Password" required>
+                    <label for="farmer_login">Login</label>
+                    <form action="/login" method="post">
+                        <select id="dropdown1" name="user_type">
+                            <option value="farmer" selected>Farmer</option>
+                            <option value="consumer">Consumer</option>
+                        </select>
+                        <br>
+                        <input type="text" id="username" name="username" placeholder="Username" required>
+                        <input type="password" id="password" name="password" placeholder="Password" required>
                         <input type="submit" value="Login as Farmer">
-                    </form>
-                    <a href="/forgot_password_farmer" class="forgot-password">Forgot Password?</a>
-                </div>
-                <div class="form-group">
-                    <label for="consumer_login">Consumer Login</label>
-                    <form action="/consumer_login" method="post">
-                        <input type="text" id="consumer_username" name="consumer_username" placeholder="Username" required>
-                        <input type="password" id="consumer_password" name="consumer_password" placeholder="Password" required>
-                        <input type="submit" value="Login as Consumer">
                     </form>
                     <a href="/forgot_password_farmer" class="forgot-password">Forgot Password?</a>
                 </div>
