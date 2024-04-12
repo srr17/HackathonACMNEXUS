@@ -9,7 +9,8 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-image: url("{{ url_for('static', filename='images/sign.jpg') }}");
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,7 +18,7 @@
         }
         .container {
             width: 400px;
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
@@ -66,8 +67,8 @@
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
             </div>
             <div class="form-group">
-                <label for="Phone Number ">Phone Number :</label>
-                <input type="Phone Number " id="Phone Number " name="Phone Number " placeholder="Enter your Phone Number " required>
+                <label for="phone_number">Phone Number:</label>
+                <input type="tel" id="phone_number" name="phone_number" placeholder="Enter your phone number" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
