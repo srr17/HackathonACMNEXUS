@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='images/A.jpg') }}");
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+            position: relative;
+        }
+        .logo {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 30px; /* Adjust size as needed */
+            height: auto;
+        }
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="password"], input[type="submit"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .forgot-password {
+            text-align: right;
+            font-size: 14px;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        #dropdown1 {
+            font-size: 16px; /* Adjust the font size as needed */
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        .new-user {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login <img src="{{ url_for('static', filename='images/bb.jpg') }}" alt="Logo" class="logo"></h1>
+        <div class="Sign-in">
+            <div class="section-title">Sign In</div>
+            <div class="login-form">
+                <form action="/login" method="post">
+                    <div class="form-group">
+                        <label for="user_type">Login as</label>
+                        <select id="dropdown1" name="user_type">
+                            <option value="farmer" selected>Farmer</option>
+                            <option value="consumer">Consumer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="username" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Login">
+                    </div>
+                </form>
+                <a href="/forgot_password_farmer" class="forgot-password">Forgot Password?</a>
+            </div>
+        </div>
+        <hr>
+        <div class="new-user">
+            <div class="section-title">New User</div>
+            <p>Create a new account to get started.</p>
+            <a href="/signup" class="signup-link">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>
