@@ -87,6 +87,7 @@ def login():
 @app.route('/forgot_password')
 def forgot_password():
     return render_template('forgot_password.html')
+#please check this once as it is not redirecting to forgot password page
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
