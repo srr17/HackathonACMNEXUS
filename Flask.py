@@ -52,7 +52,7 @@ class Cart(db.Model):
         self.product_id=product_id
 
     def __repr__(self):
-        return f'<Consumer ID: {self.user_id}, Product: {self.product_id}>'
+        return f'<Consumer ID: {self.consumer_id}, Product: {self.product_id}>'
 
 # class Messages(db.Model):
 #     pass
@@ -204,6 +204,15 @@ def add_to_cart():
     product_id = int(request.form['product_id'])
     new_cart_entry = Cart(user_id=consumer.user_id, product_id=product_id)
     db.session.add(new_cart_entry)
+    db.session.commit()
+    return redirect('/consumer/dashboard')
+
+@app.route('/remove_from_cart', methods=['POST'])
+def remove_from_cart():
+    consumer: User = User.query.filter_by(user_name=session['username'], user_type=session['user_type']).first_or_404()
+    product_id = int(request.form['product_id'])
+    entry_to_delete = Cart.query.filter_by(consumer_id=consumer.user_id, product_id=product_id).first_or_404()
+    db.session.delete(entry_to_delete)
     db.session.commit()
     return redirect('/consumer/dashboard')
 
