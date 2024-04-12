@@ -19,22 +19,24 @@
         .container {
             width: 400px;
             background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
         }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             color: #007bff;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         label {
             font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
         }
-        input[type="text"], input[type="email"], input[type="password"], input[type="submit"] {
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"], select, input[type="submit"] {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
@@ -51,17 +53,33 @@
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%237B7B7B'%3E%3Cpath d='M10 12L3 6h14z' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 12px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Sign Up !!! </h1>
+        <h1>Sign Up</h1>
         <form action="/signup" method="post">
-            <select id="dropdown1" name="user_type">
-                <option value="farmer" selected>Farmer</option>
-                <option value="consumer">Consumer</option>
-            </select>
-            <br>
+            <div class="form-group">
+                <label for="user_type">I am a:</label>
+                <select id="user_type" name="user_type">
+                    <option value="farmer">Farmer</option>
+                    <option value="consumer">Consumer</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>

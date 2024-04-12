@@ -8,6 +8,7 @@ from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__, static_folder='static')
 
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hackathon.db'
 app.secret_key = 'your_secret_key_here'
 db = SQLAlchemy(app)
@@ -84,8 +85,9 @@ def login():
 
 
 @app.route('/forgot_password')
-def forgot_password_farmer():
-    return render_template('forgot_password.html')
+def forgot_password():
+    return render_template('forgot_pass.html')
+#please check this once as it is not redirecting to forgot password page
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
