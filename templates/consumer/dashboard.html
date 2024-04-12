@@ -101,7 +101,7 @@
                     <tr>
                         <td>{{ product.product_name }}</td>
                         <td>₹{{ product.price }}</td>
-                        <td>{{ product.quantity }} kg/kgs</td>
+                        <td>{{ product.quantity }}</td>
                         <td>
                             <form action="/add_to_cart" method="POST">
                                 <input type="hidden" name="product_id" value="{{ product.product_id }}">
@@ -129,7 +129,7 @@
                     <tr>
                         <td>{{ product.product_name }}</td>
                         <td>₹{{ product.price }}</td>
-                        <td>{{ product.quantity }}kg/kgs</td>
+                        <td>{{ product.quantity }}</td>
                         <td>
                             <form action="/remove_from_cart" method="POST">
                                 <input type="hidden" name="product_id" value="{{ product.product_id }}">
