@@ -86,13 +86,22 @@
         <p>This is your dashboard. You can search for product and make purchases here.</p>
         <br>
         <div>
+            <h2>Cart Total</h2>
+            <p>Total Price: ₹{{ cart_total }}</p>
+            <button onclick="location.href='/checkout'" class="action-btn">Checkout</button>
+        </div>
+        <br>
+        <p><a href="/logout">Logout</a></p>
+        <br>
+        <div>
             <h2>Product List</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Product Name</th>
                         <th>Price(Whole)</th>
-                        <th>Quantity(kg/kgs)</th>
+                        <th>Available Quantity</th>
+                        <th>Purchase Quantity</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -101,13 +110,16 @@
                     <tr>
                         <td>{{ product.product_name }}</td>
                         <td>₹{{ product.price }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td>
-                            <form action="/add_to_cart" method="POST">
+                        <td>Available: {{ product.quantity }} {{ product.unit }}</td>
+                        <form action="/add_to_cart" method="POST">
+                            <td>
+                                <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}">
+                            </td>
+                            <td>
                                 <input type="hidden" name="product_id" value="{{ product.product_id }}">
                                 <button type="submit" class="action-btn">Add to Cart</button>
-                            </form>
-                        </td>
+                            </td>
+                        </form>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -129,7 +141,7 @@
                     <tr>
                         <td>{{ product.product_name }}</td>
                         <td>₹{{ product.price }}</td>
-                        <td>{{ product.quantity }}</td>
+                        <td>{{ cart_product_to_qty[product.product_id] }}</td>
                         <td>
                             <form action="/remove_from_cart" method="POST">
                                 <input type="hidden" name="product_id" value="{{ product.product_id }}">
@@ -142,6 +154,5 @@
             </table>
         </div>
     </div>
-    <p><a href="/logout">Logout</a></p>
 </body>
 </html>

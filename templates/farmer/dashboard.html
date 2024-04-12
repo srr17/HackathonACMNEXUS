@@ -102,14 +102,19 @@
 <body>
     <div class="form-container">
         <h1>Farmer Dashboard</h1>
+        <br>
+        <h3>Total Earning: {{ total_earning }}</h3>
         <form action="/add_listing" method="post" enctype="multipart/form-data">
             <label for="product">Product:</label>
             <input type="text" id="product" name="product" required>
 
-            <label for="quantity">Quantity(kg):</label>
+            <label for="quantity">Quantity:</label>
             <input type="number" id="quantity" name="quantity" required>
 
-            <label for="price">Price(₹):</label>
+            <label for="unit">Quantity (Unit):</label>
+            <input type="text" id="unit" name="unit" required>
+
+            <label for="price">Price(₹) per Quantity:</label>
             <input type="number" id="price" name="price" required>
 
             <label for="image">Image:</label>
@@ -125,10 +130,19 @@
         <ul>
             {% for product in products %}
             <li>
-                <strong>Product Name:</strong> {{ product.product_name }} <br>
-                <strong>Price:</strong> ₹{{ product.price }} <br>
-                <strong>Quantity:</strong> {{ product.quantity }} kg/kgs<br>
+                <div>
+                    <strong>Product Name:</strong> {{ product.product_name }} <br>
+                    <strong>Price:</strong> ₹{{ product.price }} <br>
+                    <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
+                </div>
                 <!-- Add any other product details you want to display -->
+                <div>
+                    <!-- Add X button -->
+                    <form action="/remove_listing" method="POST" style="display: inline;">
+                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                        <button type="submit" style="color: red;">X</button>
+                    </form>
+                </div>
             </li>
             {% endfor %}
         </ul>

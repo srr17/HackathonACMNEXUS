@@ -1,11 +1,14 @@
 from cgi import print_exception
+from crypt import methods
 from email import message
+from typing import List
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_bcrypt import Bcrypt
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from sqlalchemy import delete
 
 app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hackathon.db'
@@ -45,11 +48,13 @@ class Cart(db.Model):
     cart_entry_id = db.Column(db.Integer, primary_key=True)
     consumer_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('products.product_id'), nullable=False)
+    product_qty = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, user_id: int, product_id: int) -> None:
+    def __init__(self, user_id: int, product_id: int, product_qty: int) -> None:
         self.cart_entry_id=int(datetime.timestamp(datetime.now()))
         self.consumer_id=user_id
         self.product_id=product_id
+        self.product_qty=product_qty
 
     def __repr__(self):
         return f'<Consumer ID: {self.consumer_id}, Product: {self.product_id}>'
@@ -63,17 +68,32 @@ class Products(db.Model):
     product_name = db.Column(db.String(20), nullable=False)
     price = db.Column(db.Float(20), nullable=False)
     quantity = db.Column(db.Float(20), nullable=False)
+    unit = db.Column(db.String(10))
 
-    def __init__(self, farmer_id: int, name: str, price: float, quantity: float) -> None:
+    def __init__(self, farmer_id: int, name: str, price: float, quantity: float, unit: str) -> None:
         self.farmer_id = farmer_id
         self.product_id = int(datetime.timestamp(datetime.now()))
         self.product_name = name
         self.price = price
         self.quantity = quantity
+        self.unit = unit
 
     def __repr__(self) -> str:
         return f"Product: {self.product_name}, Price: {self.price}, Qty: {self.quantity}"
 
+class Transaction(db.Model):
+    transaction_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    is_earning = db.Column(db.Boolean, nullable=False)
+
+    def __init__(self, user_id: int, amount: float, is_earning: bool) -> None:
+        self.user_id = user_id
+        self.amount = amount
+        self.is_earning = is_earning
+
+    def __repr__(self):
+        return f'<User: {self.user_id}, Transaction: {"Earning" if self.is_earning else "Spending"}, Amount: {self.amount}>'
 
 
 with app.app_context():
@@ -82,6 +102,9 @@ with app.app_context():
 # Add your model to the admin interface
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(UserCredential, db.session))
+admin.add_view(ModelView(Products, db.session))
+admin.add_view(ModelView(Cart, db.session))
+admin.add_view(ModelView(Transaction, db.session))
 
 @app.route('/')
 def index():
@@ -171,18 +194,28 @@ def farmer_dashboard():
         username = session['username']
         user_id = int(session['user_id'])
         products = Products.query.filter_by(farmer_id=user_id)
-        return render_template('farmer/dashboard.html', username=username, products=products)
+        earnings: List[Transaction] = Transaction.query.filter_by(user_id=user_id, is_earning=True).all()
+        total_earning = sum([earning.amount for earning in earnings])
+        return render_template('farmer/dashboard.html', username=username, products=products, total_earning=total_earning)
     else:
         return redirect(url_for('login'))
 
 @app.route('/add_listing', methods=['POST'])
 def add_farmer_product():
-    farmer: User = User.query.filter_by(user_name=session['username'], user_type=session['user_type']).first_or_404()
     product = request.form['product']
     price = float(request.form['quantity'])
     quantity = float(request.form['price'])
-    new_product = Products(farmer_id=farmer.user_id, name=product, price=price, quantity=quantity)
+    unit = request.form['unit']
+    new_product = Products(farmer_id=session['user_id'], name=product, price=price, quantity=quantity, unit=unit)
     db.session.add(new_product)
+    db.session.commit()
+    return redirect('/farmer/dashboard')
+
+@app.route('/remove_listing', methods=['POST'])
+def remove_farmer_product():
+    product_id = request.form['product_id']
+    product_to_delete = Products.query.filter_by(product_id=product_id, farmer_id=session['user_id']).first()
+    db.session.delete(product_to_delete)
     db.session.commit()
     return redirect('/farmer/dashboard')
 
@@ -191,18 +224,24 @@ def consumer_dashboard():
     print(f"Session: {session}")
     if 'username' in session and session['user_type'] == 'consumer':
         username = session['username']
-        products = Products.query.all()
-        cart_product_ids = set([product.product_id for product in Cart.query.filter_by(consumer_id=session['user_id']).all()])
-        cart_products = [product for product in products if product.product_id in cart_product_ids]
-        return render_template('consumer/dashboard.html', username=username, products=products, cart_products=cart_products)
+        products: List[Products] = Products.query.all()
+        cart_product_id_to_qty_map = {product.product_id: product.product_qty for product in Cart.query.filter_by(consumer_id=session['user_id']).all()}
+        cart_products = [product for product in products if product.product_id in cart_product_id_to_qty_map]
+        cart_total = sum([product.price * cart_product_id_to_qty_map[product.product_id] for product in cart_products])
+        return render_template('consumer/dashboard.html', username=username, products=products, cart_products=cart_products, cart_total=cart_total, cart_product_to_qty=cart_product_id_to_qty_map)
     else:
         return redirect(url_for('login'))
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
+    print(request.form)
     consumer: User = User.query.filter_by(user_name=session['username'], user_type=session['user_type']).first_or_404()
     product_id = int(request.form['product_id'])
-    new_cart_entry = Cart(user_id=consumer.user_id, product_id=product_id)
+    product_qty = int(request.form['quantity'])
+    existing_item = Cart.query.filter_by(consumer_id=consumer.user_id, product_id=product_id).first()
+    if existing_item:
+        db.session.delete(existing_item)
+    new_cart_entry = Cart(user_id=consumer.user_id, product_id=product_id, product_qty=product_qty)
     db.session.add(new_cart_entry)
     db.session.commit()
     return redirect('/consumer/dashboard')
@@ -215,6 +254,43 @@ def remove_from_cart():
     db.session.delete(entry_to_delete)
     db.session.commit()
     return redirect('/consumer/dashboard')
+
+@app.route('/checkout')
+def checkout_cart():
+    consumer: User = User.query.filter_by(user_name=session['username'], user_type=session['user_type']).first_or_404()
+    cart_entries = Cart.query.filter_by(consumer_id=consumer.user_id).all()
+
+    total_spent = 0
+
+    # Iterate through cart entries
+    for cart_entry in cart_entries:
+        product_id = cart_entry.product_id
+        product_qty = cart_entry.product_qty
+
+        # Update the available quantity of the product
+        product = Products.query.get_or_404(product_id)
+        farmer_id = product.farmer_id
+        if product:
+            product.quantity -= product_qty
+            db.session.commit()
+
+            # Record the spending transaction
+            total_spent += product.price * product_qty
+
+        # Remove the product from the cart
+        db.session.delete(cart_entry)
+        db.session.commit()
+
+    # Record the earnings for the farmer
+    farmer_earnings = total_spent
+    earning_transaction = Transaction(user_id=farmer_id, amount=farmer_earnings, is_earning=True)
+    db.session.add(earning_transaction)
+    db.session.commit()
+
+    return redirect('/consumer/dashboard')
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
