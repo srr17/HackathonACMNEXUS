@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consumer Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -15,7 +16,7 @@
             color: #4b4b4b; /* White text color */
         }
         .container {
-            max-width: 600px;
+            max-width: 800px; /* Increased max-width for better layout */
             margin: 50px auto;
             padding: 20px;
             background-color: rgba(134, 131, 131, 0.8); /* Semi-transparent white background */
@@ -27,12 +28,12 @@
             margin-bottom: 20px;
         }
         a {
-            color: #000000; /* White color for links */
+            color: #000000; /* Black color for links */
             text-decoration: none;
             transition: color 0.3s;
         }
         a:hover {
-            color: #fffb00; /* Lighter shade of white on hover */
+            color: #fffb00; /* Lighter shade of yellow on hover */
         }
         .icon {
             font-size: 50px;
@@ -41,6 +42,41 @@
         .icon:hover {
             transform: scale(1.2); /* Increase size on hover */
             transition: transform 0.3s;
+        }
+        /* Separate styling for tables */
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #dddddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4b4b4b; /* Dark grey for table headers */
+            color: white;
+        }
+        td {
+            background-color: #f2f2f2; /* Light grey for table cells */
+        }
+        tr:hover {
+            background-color: #dddddd; /* Darker grey on hover */
+        }
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            background-color: #4b4b4b; /* Dark grey */
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .action-btn:hover {
+            background-color: #333333; /* Slightly darker grey on hover */
         }
     </style>
 </head>
@@ -54,39 +90,59 @@
         <p><a href="/logout">Logout</a></p>
         <div>
             <h2>Product List</h2>
-            <ul>
-                {% for product in products %}
-                <li>
-                    <strong>Product Name:</strong> {{ product.product_name }} <br>
-                    <strong>Price:</strong> ${{ product.price }} <br>
-                    <strong>Quantity:</strong> {{ product.quantity }} <br>
-                    <!-- Add any other product details you want to display -->
-                    <form action="/add_to_cart" method="POST">
-                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                        <button type="submit">+</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
-    <!-- Include any necessary JavaScript scripts here -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.product_name }}</td>
+                        <td>${{ product.price }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>
+                            <form action="/add_to_cart" method="POST">
+                                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                <button type="submit" class="action-btn">Add to Cart</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
         <div>
             <h2>Cart</h2>
-            <ul>
-                {% for product in cart_products %}
-                <li>
-                    <strong>Product Name:</strong> {{ product.product_name }} <br>
-                    <strong>Price:</strong> ${{ product.price }} <br>
-                    <strong>Quantity:</strong> {{ product.quantity }} <br>
-                    <!-- Add any other product details you want to display -->
-                    <form action="/remove_from_cart" method="POST">
-                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                        <button type="submit">-</button>
-                    </form>
-                </li>
-                {% endfor %}
-            </ul>
-    <!-- Include any necessary JavaScript scripts here -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in cart_products %}
+                    <tr>
+                        <td>{{ product.product_name }}</td>
+                        <td>${{ product.price }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>
+                            <form action="/remove_from_cart" method="POST">
+                                <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                <button type="submit" class="action-btn">Remove from Cart</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
