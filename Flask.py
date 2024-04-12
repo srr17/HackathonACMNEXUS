@@ -57,24 +57,31 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
 
-    username = request.form['username']
-    password = request.form['password']
-    user_type = request.form['user_type']
+    try:
+        username = request.form['username']
+        password = request.form['password']
+        user_type = request.form['user_type']
 
-    user: User = User.query.filter_by(user_name=username, user_type=user_type).first_or_404()
-    user_cred: UserCredential = UserCredential.query.filter_by(user_id=user.user_id).first_or_404()
+        user: User = User.query.filter_by(user_name=username, user_type=user_type).first_or_404()
+        user_cred: UserCredential = UserCredential.query.filter_by(user_id=user.user_id).first_or_404()
 
-    # Verify the password hash
-    if bcrypt.check_password_hash(user_cred.password_hash, password):
-        print("Authentication successful")
-        # Authentication successful
-        # Here you can set user information in the session if needed
-        session['user_id'] = user.user_id
-        session['user_type'] = user.user_type
-        return redirect(f"/{user.user_type}/dashboard")
-    else:
-        print("Authentication rejected")
-        return render_template('login.html', message='Invalid username or password')
+        # Verify the password hash
+        if bcrypt.check_password_hash(user_cred.password_hash, password):
+            print("Authentication successful")
+            # Authentication successful
+            # Here you can set user information in the session if needed
+            session['user_id'] = user.user_id
+            session['username'] = user.user_name
+            session['user_type'] = user.user_type
+            print(f"Redirecting to /{user.user_type}/dashboard")
+            return redirect(f"/{user.user_type}/dashboard")
+        else:
+            print("Authentication rejected")
+            return render_template('login.html', message='Invalid username or password')
+    except Exception as e:
+        print(str(e))
+        return render_template('login.html')
+
 
 @app.route('/forgot_password_farmer')
 def forgot_password_farmer():
@@ -118,10 +125,11 @@ def reset_password():
 def logout():
     session.pop('username', None)
     session.pop('user_type', None)
-    return redirect(url_for('index.html'))
+    return redirect('/')
 
 @app.route('/farmer/dashboard')
 def farmer_dashboard():
+    print(f"Session: {session}")
     if 'username' in session and session['user_type'] == 'farmer':
         username = session['username']
         return render_template('farmer/dashboard.html', username=username)
@@ -130,6 +138,7 @@ def farmer_dashboard():
 
 @app.route('/consumer/dashboard')
 def consumer_dashboard():
+    print(f"Session: {session}")
     if 'username' in session and session['user_type'] == 'consumer':
         username = session['username']
         return render_template('consumer/dashboard.html', username=username)
