@@ -34,6 +34,14 @@
         a:hover {
             color: #fffb00; /* Lighter shade of white on hover */
         }
+        .icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        .icon:hover {
+            transform: scale(1.2); /* Increase size on hover */
+            transition: transform 0.3s;
+        }
     </style>
 </head>
 <body>
@@ -41,16 +49,10 @@
         <h1>Welcome, {{ username }}!</h1>
         <p>This is your dashboard. You can search for produce and make purchases here.</p>
         <br>
-        <p><a href="/cart">View Cart</a></p>
-        <p><a href="/checkout">Proceed to Checkout</a></p>
-        <p><a href="/logout">Logout</a></p>
-        
-        <!-- Option to find local farmers
-        <form action="/find_farmers" method="GET">
-            <label for="search_farmers">Search for Local Farmers:</label>
-            <input type="text" id="search_farmers" name="search_farmers">
-            <button type="submit">Search</button>
-        </form>-->
+        <!-- Animated icons -->
+        <a href="/cart"><i class="fas fa-shopping-cart icon"></i></a>
+        <a href="/checkout"><i class="fas fa-cash-register icon"></i></a>
+        <a href="/logout"><i class="fas fa-sign-out-alt icon"></i></a>
     </div>
 </body>
 </html>
