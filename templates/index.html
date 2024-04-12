@@ -84,10 +84,8 @@
     </style>
 </head>
 <body>
-    <div id="video-background">
-        <video autoplay loop muted>
+    <video autoplay loop muted>
             <video src="{{ url_for('static', filename='video/V.mp4') }}"></video>
-        </div>
     <div class="overlay">
         <img src="{{ url_for('static', filename='images/farmer.jpg') }}" alt="Farmer Image" class="farmer-image">
         <img src="{{ url_for('static', filename='images/fruit.jpg') }}" alt="Consumer Image" class="consumer-image">
