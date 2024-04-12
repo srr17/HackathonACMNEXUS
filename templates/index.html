@@ -84,7 +84,7 @@
     </style>
 </head>
 <body>
-    <video src="C:\Users\sohan\Documents\GitHub\HackathonACMNEXUS\static\video\V.mp4"></video>
+    <video src="{{ url_for('static', filename='video/V.mp4') }}"></video>
     <div class="overlay">
         <img src="{{ url_for('static', filename='images/farmer.jpg') }}" alt="Farmer Image" class="farmer-image">
         <img src="{{ url_for('static', filename='images/fruit.jpg') }}" alt="Consumer Image" class="consumer-image">
