@@ -9,6 +9,7 @@ from flask_bcrypt import Bcrypt
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from sqlalchemy import delete
+from flask import jsonify
 
 app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hackathon.db'
@@ -94,6 +95,27 @@ class Transaction(db.Model):
 
     def __repr__(self):
         return f'<User: {self.user_id}, Transaction: {"Earning" if self.is_earning else "Spending"}, Amount: {self.amount}>'
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    subject = db.Column(db.String(100), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+
+    sender = db.relationship('User', foreign_keys=[sender_id])
+    recipient = db.relationship('User', foreign_keys=[recipient_id])
+
+    def __init__(self, sender_id, recipient_id, subject, body):
+        self.sender_id = sender_id
+        self.recipient_id = recipient_id
+        self.subject = subject
+        self.body = body
+
+    def __repr__(self):
+        return f"<Message from {self.sender_id} to {self.recipient_id}>"
+
 
 
 with app.app_context():
@@ -196,9 +218,25 @@ def farmer_dashboard():
         products = Products.query.filter_by(farmer_id=user_id)
         earnings: List[Transaction] = Transaction.query.filter_by(user_id=user_id, is_earning=True).all()
         total_earning = sum([earning.amount for earning in earnings])
-        return render_template('farmer/dashboard.html', username=username, products=products, total_earning=total_earning)
+        messages = Message.query.filter_by(recipient_id=user_id).all()
+        return render_template('farmer/dashboard.html', username=username, products=products, total_earning=total_earning, messages=messages)
     else:
         return redirect(url_for('login'))
+
+@app.route('/delete_message', methods=['POST'])
+def delete_message():
+    # Get the message ID from the request
+    message_id = request.form['message_id']
+
+    # Query the database to find the message
+    message_to_delete = Message.query.get(message_id)
+
+    # Check if the message exists and if the farmer is the recipient
+    if message_to_delete and message_to_delete.recipient_id == session['user_id']:
+        # Delete the message
+        db.session.delete(message_to_delete)
+        db.session.commit()
+    return redirect('farmer/dashboard')
 
 @app.route('/add_listing', methods=['POST'])
 def add_farmer_product():
@@ -261,15 +299,19 @@ def checkout_cart():
     cart_entries = Cart.query.filter_by(consumer_id=consumer.user_id).all()
 
     total_spent = 0
+    order_summary = ""
 
-    # Iterate through cart entries
+    if not cart_entries:
+        return redirect('/consumer/dashboard')
+
+    # Iterate through cart entries to build the order summary
     for cart_entry in cart_entries:
         product_id = cart_entry.product_id
         product_qty = cart_entry.product_qty
 
         # Update the available quantity of the product
         product = Products.query.get_or_404(product_id)
-        farmer_id = product.farmer_id
+        recipient_id = product.farmer_id  # Assuming all products are from the same farmer
         if product:
             product.quantity -= product_qty
             db.session.commit()
@@ -277,17 +319,29 @@ def checkout_cart():
             # Record the spending transaction
             total_spent += product.price * product_qty
 
+            # Add product details to the order summary
+            order_summary += f"{product_qty} units of {product.product_name}, "
+
         # Remove the product from the cart
         db.session.delete(cart_entry)
         db.session.commit()
 
+    # Send a single message to the farmer with the order summary
+    sender_username = consumer.user_name
+    subject = "New Order Received"
+    body = f"New order received from {sender_username}. Order summary: {order_summary}"
+    new_message = Message(sender_id=consumer.user_id, recipient_id=recipient_id, subject=subject, body=body)
+    db.session.add(new_message)
+    db.session.commit()
+
     # Record the earnings for the farmer
     farmer_earnings = total_spent
-    earning_transaction = Transaction(user_id=farmer_id, amount=farmer_earnings, is_earning=True)
+    earning_transaction = Transaction(user_id=recipient_id, amount=farmer_earnings, is_earning=True)
     db.session.add(earning_transaction)
     db.session.commit()
 
     return redirect('/consumer/dashboard')
+
 
 
 

@@ -107,20 +107,22 @@
                 </thead>
                 <tbody>
                     {% for product in products %}
-                    <tr>
-                        <td>{{ product.product_name }}</td>
-                        <td>₹{{ product.price }}</td>
-                        <td>Available: {{ product.quantity }} {{ product.unit }}</td>
-                        <form action="/add_to_cart" method="POST">
-                            <td>
-                                <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}">
-                            </td>
-                            <td>
-                                <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                                <button type="submit" class="action-btn">Add to Cart</button>
-                            </td>
-                        </form>
-                    </tr>
+                        {% if product.quantity %}
+                            <tr>
+                                <td>{{ product.product_name }}</td>
+                                <td>₹{{ product.price }}</td>
+                                <td>Available: {{ product.quantity }} {{ product.unit }}</td>
+                                <form action="/add_to_cart" method="POST">
+                                    <td>
+                                        <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}">
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                                        <button type="submit" class="action-btn">Add to Cart</button>
+                                    </td>
+                                </form>
+                            </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
