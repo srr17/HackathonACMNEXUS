@@ -10,7 +10,7 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url("{{ url_for('static', filename='images/c.jpg') }}");
+            background-image: url("{{ url_for('static', filename='images/consumer_dashboard.jpg') }}");
             background-size: cover;
             background-repeat: no-repeat;
             color: #4b4b4b; /* White text color */
@@ -31,9 +31,6 @@
             color: #000000; /* Black color for links */
             text-decoration: none;
             transition: color 0.3s;
-        }
-        a:hover {
-            color: #fffb00; /* Lighter shade of yellow on hover */
         }
         .icon {
             font-size: 50px;
@@ -78,10 +75,31 @@
         .action-btn:hover {
             background-color: #333333; /* Slightly darker grey on hover */
         }
+        .logout-container {
+            position: relative;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 10px; /* Adjust as needed */
+            right: 10px; /* Adjust as needed */
+            padding: 8px 16px;
+            background-color: #a81f17;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
+    
     <div class="container">
+        <div class="logout-container">
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
         <h1>Welcome, {{ username }}!</h1>
         <p>This is your dashboard. You can search for product and make purchases here.</p>
         <br>
@@ -91,7 +109,6 @@
             <button onclick="location.href='/checkout'" class="action-btn">Checkout</button>
         </div>
         <br>
-        <p><a href="/logout">Logout</a></p>
         <br>
         <div>
             <h2>Product List</h2>
