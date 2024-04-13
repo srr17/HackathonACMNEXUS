@@ -34,7 +34,7 @@
         label {
             font-weight: bold;
         }
-        input[type="email"], input[type="submit"] {
+        input[type="email"], input[type="phone"], input[type="submit"] {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
@@ -56,10 +56,17 @@
 <body>
     <div class="container">
         <h1>Forgot Password</h1>
-        <form action="/signup.html" method="post">
+        <form action="/reset-password" method="post">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <label for="user_type">User Type:</label><br>
+                <input type="radio" id="farmer" name="user_type" value="farmer" checked>
+                <label for="farmer">Farmer</label><br>
+                <input type="radio" id="consumer" name="user_type" value="consumer">
+                <label for="consumer">Consumer</label><br>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="phone" id="phone" name="phone" placeholder="Enter your phone number" required>
             </div>
             <input type="submit" value="Reset Password">
         </form>
