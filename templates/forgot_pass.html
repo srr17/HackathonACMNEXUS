@@ -3,73 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password</title>
+    <title>Redirect to Login</title>
+    <link rel="stylesheet" href="../static/login/styles.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url("{{ url_for('static', filename='images/fp.jpg') }}");
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            width: 400px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #007bff;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-        }
-        input[type="email"], input[type="phone"], input[type="submit"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+        /* Styles for the popup */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            box-sizing: border-box;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
         }
-        input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
+
+        .popup-box {
+            position: relative;
+            width: 300px;
+            max-width: 90%;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 5px;
+            right: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Forgot Password</h1>
-        <form action="/reset-password" method="post">
-            <div class="form-group">
-                <label for="user_type">User Type:</label><br>
-                <input type="radio" id="farmer" name="user_type" value="farmer" checked>
-                <label for="farmer">Farmer</label><br>
-                <input type="radio" id="consumer" name="user_type" value="consumer">
-                <label for="consumer">Consumer</label><br>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number:</label>
-                <input type="phone" id="phone" name="phone" placeholder="Enter your phone number" required>
-            </div>
-            <input type="submit" value="Reset Password">
-        </form>
+
+<div class="container">
+    <label for="userType">Select User Type:</label>
+    <select id="userType">
+        <option value="farmer">Farmer</option>
+        <option value="consumer">Consumer</option>
+    </select><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email"><br>
+
+    <button onclick="showPopup()">Reset Password</button>
+</div>
+
+<!-- Popup container -->
+<div class="popup-container" id="popupContainer">
+    <div class="popup-box">
+        <span class="popup-close" onclick="hidePopup()">x</span>
+        <p>Password reset link has been sent.</p>
     </div>
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById('popupContainer').style.display = 'block';
+        setTimeout(hidePopup, 2000); // Automatically hide after 2 seconds (adjust as needed)
+    }
+
+    function hidePopup() {
+        document.getElementById('popupContainer').style.display = 'none';
+        redirectToLogin();
+    }
+
+    function redirectToLogin() {
+        window.location.href = "/login"; // Redirects to the login route in Flask
+    }
+</script>
+
 </body>
 </html>
