@@ -5,43 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Dashboard</title>
     <style>
+        /* Global Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url("{{ url_for('static', filename='images/farmer.jpg') }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: space-between; /* Align items on either side */
-            align-items: center;
-            min-height: 100vh; /* Ensure full height */
+            background-color: #f4f4f4;
         }
 
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 40px;
-            border-radius: 20px; /* Increased border-radius for rounded corners */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
-            text-align: center;
-            width: 40%; /* Adjust width as needed */
-        }
-
-        .product-list-container {
-            background-color: rgba(255, 255, 255, 0.8);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 20px; /* Increased border-radius for rounded corners */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
-            text-align: center;
-            width: 40%; /* Adjust width as needed */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        h1 {
+        /* Form Container Styles */
+        .form-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 45%;
+            margin-bottom: 20px;
+        }
+
+        .form-container h1 {
             color: #007bff;
             margin-bottom: 20px;
             font-size: 2.5rem;
         }
 
+        /* Product List Container Styles */
+        .product-list-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 45%;
+        }
+
+        .product-list-container h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        ul li:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Form and List Item Styles */
         form {
             display: flex;
             flex-direction: column;
@@ -62,7 +94,7 @@
             padding: 12px;
             border-radius: 8px;
             border: 1px solid #ccc;
-            width: 100%;
+            width: calc(100% - 24px);
             box-sizing: border-box;
             margin-bottom: 20px;
             font-size: 1rem;
@@ -81,91 +113,74 @@
             background-color: #0056b3;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
+        input[type="file"] {
+            width: 100%;
         }
 
-        ul li {
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
+        p {
+            margin-top: 0;
         }
 
-        ul li:hover {
-            background-color: #f0f0f0;
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .form-container,
+            .product-list-container {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Farmer Dashboard</h1>
-        <br>
-        <h3>Total Earning: {{ total_earning }}</h3>
-        <form action="/add_listing" method="post" enctype="multipart/form-data">
-            <label for="product">Product:</label>
-            <input type="text" id="product" name="product" required>
+    <div class="container">
+        <!-- Form Container -->
+        <div class="form-container">
+            <h1>Farmer Dashboard</h1>
+            <h3>Total Earning: {{ total_earning }}</h3>
+            <form action="/add_listing" method="post" enctype="multipart/form-data">
+                <label for="product">Product:</label>
+                <input type="text" id="product" name="product" required>
 
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
 
-            <label for="unit">Quantity (Unit):</label>
-            <input type="text" id="unit" name="unit" required>
+                <label for="unit">Quantity (Unit):</label>
+                <input type="text" id="unit" name="unit" required>
 
-            <label for="price">Price(₹) per Quantity:</label>
-            <input type="number" id="price" name="price" required>
+                <label for="price">Price(₹) per Quantity:</label>
+                <input type="number" id="price" name="price" required>
 
-            <label for="image">Image:</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
 
-            <input type="submit" value="Add Listing">
-        </form>
-        <br>
-        <p><a href="/logout">Logout</a></p>
-    </div>
-    <div class="product-list-container">
-        <h2>Product List</h2>
-        <ul>
-            {% for product in products %}
-            <li>
-                <div>
-                    <strong>Product Name:</strong> {{ product.product_name }} <br>
-                    <strong>Price:</strong> ₹{{ product.price }} <br>
-                    <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
-                </div>
-                <!-- Add any other product details you want to display -->
-                <div>
-                    <!-- Add X button -->
-                    <form action="/remove_listing" method="POST" style="display: inline;">
-                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                        <button type="submit" style="color: red;">X</button>
-                    </form>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <br><br>
-    {% if messages %}
-        <div class="message-container">
-            <h2>Messages</h2>
+                <input type="submit" value="Add Listing">
+            </form>
+            <p><a href="/logout">Logout</a></p>
+        </div>
+
+        <!-- Product List Container -->
+        <div class="product-list-container">
+            <h2>Product List</h2>
             <ul>
-                {% for message in messages %}
+                {% for product in products %}
                 <li>
-                    <strong>From:</strong> {{ message.sender.user_name }} <br>
-                    <strong>Subject:</strong> {{ message.subject }} <br>
-                    <p>{{ message.body }}</p>
-                    <form action="/delete_message" method="POST" style="display: inline;">
-                        <input type="hidden" name="message_id" value="{{ message.id }}">
-                        <button type="submit" style="color: red;">Delete</button>
-                    </form>
+                    <div>
+                        <strong>Product Name:</strong> {{ product.product_name }} <br>
+                        <strong>Price:</strong> ₹{{ product.price }} <br>
+                        <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
+                    </div>
+                    <!-- Add any other product details you want to display -->
+                    <div>
+                        <!-- Add X button -->
+                        <form action="/remove_listing" method="POST" style="display: inline;">
+                            <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                            <button type="submit" style="color: red;">X</button>
+                        </form>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
-    {% endif %}
-
+    </div>
 </body>
 </html>
+        
