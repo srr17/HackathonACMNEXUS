@@ -10,15 +10,6 @@
     <div class="logout-container">
         <p><a href="/logout" class="logout-button">Logout</a></p>
     </div>
-    <div class="container">
-        <div class="earnings-card">
-            <span class="earnings">Total Earnings: ₹{{ total_earning }}</span>
-            <hr class="divider">
-            <!-- Additional content can go here -->
-        </div>
-    </div>
-    
-    
     <div class="header">
         <h1 style="text-align: center;">Farmer Dashboard</h1>
     </div>
@@ -86,6 +77,13 @@
             </li>
             {% endfor %}
         </ul>
+    </div>
+    <div class="container">
+        <div class="earnings-card">
+            <span class="earnings">Total Earnings: ₹{{ total_earning }}</span>
+            <hr class="divider">
+            <!-- Additional content can go here -->
+        </div>
     </div>
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="togglePopup()"></div>
