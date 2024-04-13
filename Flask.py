@@ -10,6 +10,9 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from sqlalchemy import delete
 from flask import jsonify
+from werkzeug.utils import secure_filename
+import os
+
 
 app = Flask(__name__, static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hackathon.db'
@@ -70,14 +73,16 @@ class Products(db.Model):
     price = db.Column(db.Float(20), nullable=False)
     quantity = db.Column(db.Float(20), nullable=False)
     unit = db.Column(db.String(10))
+    image_url = db.Column(db.String(255))
 
-    def __init__(self, farmer_id: int, name: str, price: float, quantity: float, unit: str) -> None:
+    def __init__(self, farmer_id: int, name: str, price: float, quantity: float, unit: str, image_url: str) -> None:
         self.farmer_id = farmer_id
         self.product_id = int(datetime.timestamp(datetime.now()))
         self.product_name = name
         self.price = price
         self.quantity = quantity
         self.unit = unit
+        self.image_url = image_url
 
     def __repr__(self) -> str:
         return f"Product: {self.product_name}, Price: {self.price}, Qty: {self.quantity}"
@@ -116,7 +121,13 @@ class Message(db.Model):
     def __repr__(self):
         return f"<Message from {self.sender_id} to {self.recipient_id}>"
 
+UPLOAD_FOLDER = 'static'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 with app.app_context():
     db.create_all()
@@ -244,7 +255,25 @@ def add_farmer_product():
     price = float(request.form['quantity'])
     quantity = float(request.form['price'])
     unit = request.form['unit']
-    new_product = Products(farmer_id=session['user_id'], name=product, price=price, quantity=quantity, unit=unit)
+    file = request.files['image']
+    # Check if the file field is in the request and if a file is uploaded
+    if 'image' not in request.files:
+        return redirect('/farmer/dashboard')
+
+    file = request.files['image']
+
+    # If the user does not select a file, the browser submits an empty file without a filename
+    if not file.filename:
+        return redirect('/farmer/dashboard')
+
+    # Check if the file is allowed
+    if not allowed_file(file.filename):
+        return redirect('/farmer/dashboard')
+
+    # Secure and save the filename
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    new_product = Products(farmer_id=session['user_id'], name=product, price=price, quantity=quantity, unit=unit, image_url=filename)
     db.session.add(new_product)
     db.session.commit()
     return redirect('/farmer/dashboard')

@@ -243,6 +243,9 @@
                         <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
                     </div>
                     <div>
+                        <img src="{{ url_for('static', filename=product.image_url) }}" alt="Product Image" style="max-width: 100px; max-height: 100px;">
+                    </div>
+                    <div>
                         <form action="/remove_listing" method="POST">
                             <input type="hidden" name="product_id" value="{{ product.product_id }}">
                             <button type="submit">Delete</button>

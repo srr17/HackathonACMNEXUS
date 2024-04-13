@@ -99,6 +99,7 @@
                 <thead>
                     <tr>
                         <th>Product Name</th>
+                        <th>Image</th>
                         <th>Price(Whole)</th>
                         <th>Available Quantity</th>
                         <th>Purchase Quantity</th>
@@ -110,6 +111,9 @@
                         {% if product.quantity %}
                             <tr>
                                 <td>{{ product.product_name }}</td>
+                                <td>
+                                    <img src="{{ url_for('static', filename=product.image_url) }}" alt="Product Image" style="max-width: 100px; max-height: 100px;">
+                                </td>
                                 <td>₹{{ product.price }}</td>
                                 <td>Available: {{ product.quantity }} {{ product.unit }}</td>
                                 <form action="/add_to_cart" method="POST">
