@@ -4,168 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmer Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url("{{ url_for('static', filename='images/farmer.jpg') }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: space-between; /* Align items on either side */
-            align-items: center;
-            min-height: 100vh; /* Ensure full height */
-        }
-
-        .form-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 40px;
-            border-radius: 20px; /* Increased border-radius for rounded corners */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
-            text-align: center;
-            width: 40%; /* Adjust width as needed */
-        }
-
-        .product-list-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 20px; /* Increased border-radius for rounded corners */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
-            text-align: center;
-            width: 40%; /* Adjust width as needed */
-        }
-
-        h1 {
-            color: #007bff;
-            margin-bottom: 20px;
-            font-size: 2.5rem;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        label {
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            color: #555;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="file"],
-        input[type="submit"] {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
-
-        input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 1.1rem;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-        }
-
-        ul li:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../../static/farmer/styles.css">
 </head>
 <body>
-    <div class="form-container">
-        <h1>Farmer Dashboard</h1>
-        <br>
-        <h3>Total Earning: {{ total_earning }}</h3>
-        <form action="/add_listing" method="post" enctype="multipart/form-data">
-            <label for="product">Product:</label>
-            <input type="text" id="product" name="product" required>
+    <div class="container">
+        <div class="form-container">
+            <h1>Farmer Dashboard</h1>
+            <br>
+            <!-- Your form content goes here -->
+            <form action="/add_listing" method="post" enctype="multipart/form-data">
+                <label for="product">Product:</label>
+                <input type="text" id="product" name="product" required>
 
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
 
-            <label for="unit">Quantity (Unit):</label>
-            <input type="text" id="unit" name="unit" required>
+                <label for="unit">Quantity (Unit):</label>
+                <input type="text" id="unit" name="unit" required>
 
-            <label for="price">Price(₹) per Quantity:</label>
-            <input type="number" id="price" name="price" required>
+                <label for="price">Price(₹) per Quantity:</label>
+                <input type="number" id="price" name="price" required>
 
-            <label for="image">Image:</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
 
-            <input type="submit" value="Add Listing">
-        </form>
-        <br>
-        <p><a href="/logout">Logout</a></p>
-    </div>
-    <div class="product-list-container">
-        <h2>Product List</h2>
-        <ul>
-            {% for product in products %}
-            <li>
-                <div>
-                    <strong>Product Name:</strong> {{ product.product_name }} <br>
-                    <strong>Price:</strong> ₹{{ product.price }} <br>
-                    <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
-                </div>
-                <!-- Add any other product details you want to display -->
-                <div>
-                    <!-- Add X button -->
-                    <form action="/remove_listing" method="POST" style="display: inline;">
-                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                        <button type="submit" style="color: red;">X</button>
-                    </form>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <br><br>
-    {% if messages %}
-        <div class="message-container">
-            <h2>Messages</h2>
+                <input type="submit" value="Add Listing" class="add-listing-button">
+            </form>
+            <br>
+            <p><a href="/logout" class="logout-button">Logout</a></p>
+        </div>
+        <div class="product-list-container">
+            <h2>Product List</h2>
+            <!-- Your product list content goes here -->
             <ul>
-                {% for message in messages %}
+                {% for product in products %}
                 <li>
-                    <strong>From:</strong> {{ message.sender.user_name }} <br>
-                    <strong>Subject:</strong> {{ message.subject }} <br>
-                    <p>{{ message.body }}</p>
-                    <form action="/delete_message" method="POST" style="display: inline;">
-                        <input type="hidden" name="message_id" value="{{ message.id }}">
-                        <button type="submit" style="color: red;">Delete</button>
-                    </form>
+                    <div>
+                        <strong>Product Name:</strong> {{ product.product_name }} <br>
+                        <strong>Price:</strong> ₹{{ product.price }} <br>
+                        <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
+                    </div>
+                    <!-- Add any other product details you want to display -->
+                    <div>
+                        <!-- Add X button -->
+                        <form action="/remove_listing" method="POST" style="display: inline;">
+                            <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                            <button type="submit" style="color: red;">X</button>
+                        </form>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
-    {% endif %}
-
+    </div>
+    <!-- Other content -->
 </body>
 </html>
