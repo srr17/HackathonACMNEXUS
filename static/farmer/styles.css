@@ -90,14 +90,13 @@ body {
 }
 
 .product-list-container button {
-    background-color: transparent;
+    background-color: rgb(136, 4, 4);
     border: none;
     cursor: pointer;
+    width: 100px; /* Adjust the width as needed */
+    height: 10;
 }
 
-.product-list-container button:hover {
-    color: #ff0000; /* Red on hover */
-}
 
 /* Styling the Add Listing button */
 .add-listing-button {
@@ -285,3 +284,51 @@ body {
     z-index: 998; /* Ensure the overlay is below the popup */
 }
 
+/* Button Style */
+button {
+    background-color: #007bff; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  
+  /* Button Disabled Style */
+  button[disabled] {
+    background-color: #cccccc; /* Grey */
+    cursor: not-allowed;
+  }
+  
+  /* Button Disabled Hover Effect */
+  button[disabled]:hover {
+    background-color: #cccccc; /* Grey */
+  }
+  
+  .earnings-card {
+    font-family: Arial, sans-serif;
+    width: 300px; /* Adjust width as needed */
+    padding: 20px;
+    align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.earnings {
+    font-size: 24px;
+    color: #333;
+}
+
+.divider {
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}

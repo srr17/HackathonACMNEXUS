@@ -10,12 +10,17 @@
     <div class="logout-container">
         <p><a href="/logout" class="logout-button">Logout</a></p>
     </div>
-    <button class="show-messages-button" onclick="togglePopup()">Show Messages</button> <!-- Button to toggle the popup -->
-    <div class="header">
-        <h1>Farmer Dashboard</h1>
-        <div>
+    <div class="container">
+        <div class="earnings-card">
             <span class="earnings">Total Earnings: ₹{{ total_earning }}</span>
+            <hr class="divider">
+            <!-- Additional content can go here -->
         </div>
+    </div>
+    
+    
+    <div class="header">
+        <h1 style="text-align: center;">Farmer Dashboard</h1>
     </div>
     <div class="container">
         <div class="form-container">
@@ -35,8 +40,9 @@
 
                 <label for="image">Image:</label>
                 <input type="file" id="image" name="image" accept="image/*" required>
-
+                
                 <input type="submit" value="Add Product">
+                <button type="button" onclick="togglePopup()">Show Messages</button> <!-- Button to toggle the popup -->
             </form>
         </div>
         <div class="product-list-container">
