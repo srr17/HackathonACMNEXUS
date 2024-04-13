@@ -3,207 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../static/farmer/styles.css">
     <title>Farmer Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url("{{ url_for('static', filename='images/farmer.jpg') }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            top: 0;
-            z-index: 999;
-        }
-
-        .header h1 {
-            color: #007bff;
-            margin: 0;
-            font-size: 1.8rem;
-        }
-
-        .header .earnings {
-            font-size: 1.2rem;
-            color: #555;
-        }
-
-        .header .messages-button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .header .messages-button:hover {
-            background-color: #0056b3;
-        }
-
-        .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 80%;
-            margin-top: 100px;
-        }
-
-        .form-container,
-        .product-list-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            width: 48%;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-
-        .form-container h2,
-        .product-list-container h2 {
-            color: #007bff;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .form-container form {
-            text-align: center;
-        }
-
-        .form-container label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            color: #555;
-        }
-
-        .form-container input[type="text"],
-        .form-container input[type="number"],
-        .form-container input[type="file"],
-        .form-container input[type="submit"] {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            width: 100%;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
-
-        .form-container input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 1.1rem;
-        }
-
-        .form-container input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        .product-list-container ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .product-list-container ul li {
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-        }
-
-        .product-list-container ul li:hover {
-            background-color: #f0f0f0;
-        }
-
-        .product-list-container form {
-            display: inline;
-        }
-
-        .product-list-container form button {
-            color: red;
-            border: none;
-            background: none;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .product-list-container form button:hover {
-            color: darkred;
-        }
-
-        .message-container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .message-container h2 {
-            color: #007bff;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .message-container ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .message-container ul li {
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-        }
-
-        .message-container ul li:hover {
-            background-color: #f0f0f0;
-        }
-
-        .message-container form {
-            display: inline;
-        }
-
-        .message-container form button {
-            color: red;
-            border: none;
-            background: none;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .message-container form button:hover {
-            color: darkred;
-        }
-    </style>
 </head>
 <body>
+    <div class="logout-container">
+        <p><a href="/logout" class="logout-button">Logout</a></p>
+    </div>
+    <button class="show-messages-button" onclick="togglePopup()">Show Messages</button> <!-- Button to toggle the popup -->
     <div class="header">
         <h1>Farmer Dashboard</h1>
         <div>
@@ -229,7 +36,7 @@
                 <label for="image">Image:</label>
                 <input type="file" id="image" name="image" accept="image/*" required>
 
-                <input type="submit" value="Add Listing">
+                <input type="submit" value="Add Product">
             </form>
         </div>
         <div class="product-list-container">
@@ -256,8 +63,9 @@
             </ul>
         </div>
     </div>
-    {% if messages %}
-    <div class="message-container">
+    <!-- Popup container for messages -->
+    <div class="popup-container" id="popupContainer">
+        <span class="popup-close" onclick="togglePopup()">X</span> <!-- Close button for the popup -->
         <h2>Messages</h2>
         <ul>
             {% for message in messages %}
@@ -273,7 +81,20 @@
             {% endfor %}
         </ul>
     </div>
-    {% endif %}
-    <p><a href="/logout">Logout</a></p>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="togglePopup()"></div>
+    <script>
+        function togglePopup() {
+            var popup = document.getElementById("popupContainer");
+            var overlay = document.getElementById("overlay");
+            if (popup.style.display === "none" || popup.style.display === "") {
+                popup.style.display = "block";
+                overlay.style.display = "block";
+            } else {
+                popup.style.display = "none";
+                overlay.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
