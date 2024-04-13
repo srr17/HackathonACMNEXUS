@@ -13,52 +13,92 @@
             background-size: cover;
             background-repeat: no-repeat;
             display: flex;
-            justify-content: space-between; /* Align items on either side */
+            flex-direction: column;
             align-items: center;
-            min-height: 100vh; /* Ensure full height */
+            min-height: 100vh;
         }
 
-        .form-container {
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
             background-color: rgba(255, 255, 255, 0.8);
-            padding: 40px;
-            border-radius: 20px; /* Increased border-radius for rounded corners */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
-            text-align: center;
-            width: 40%; /* Adjust width as needed */
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            z-index: 999;
         }
 
+        .header h1 {
+            color: #007bff;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .header .earnings {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .header .messages-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .header .messages-button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 80%;
+            margin-top: 100px;
+        }
+
+        .form-container,
         .product-list-container {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
-            border-radius: 20px; /* Increased border-radius for rounded corners */
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Increased box-shadow for better depth */
-            text-align: center;
-            width: 40%; /* Adjust width as needed */
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 48%;
+            max-height: 70vh;
+            overflow-y: auto;
         }
 
-        h1 {
+        .form-container h2,
+        .product-list-container h2 {
             color: #007bff;
+            font-size: 1.5rem;
             margin-bottom: 20px;
-            font-size: 2.5rem;
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .form-container form {
+            text-align: center;
         }
 
-        label {
+        .form-container label {
+            display: block;
             font-weight: bold;
             margin-bottom: 10px;
             font-size: 1.2rem;
             color: #555;
         }
 
-        input[type="text"],
-        input[type="number"],
-        input[type="file"],
-        input[type="submit"] {
+        .form-container input[type="text"],
+        .form-container input[type="number"],
+        .form-container input[type="file"],
+        .form-container input[type="submit"] {
             padding: 12px;
             border-radius: 8px;
             border: 1px solid #ccc;
@@ -68,7 +108,7 @@
             font-size: 1rem;
         }
 
-        input[type="submit"] {
+        .form-container input[type="submit"] {
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -77,16 +117,16 @@
             font-size: 1.1rem;
         }
 
-        input[type="submit"]:hover {
+        .form-container input[type="submit"]:hover {
             background-color: #0056b3;
         }
 
-        ul {
+        .product-list-container ul {
             list-style: none;
             padding: 0;
         }
 
-        ul li {
+        .product-list-container ul li {
             margin-bottom: 20px;
             padding: 20px;
             border-radius: 8px;
@@ -94,78 +134,143 @@
             background-color: #f9f9f9;
         }
 
-        ul li:hover {
+        .product-list-container ul li:hover {
             background-color: #f0f0f0;
+        }
+
+        .product-list-container form {
+            display: inline;
+        }
+
+        .product-list-container form button {
+            color: red;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .product-list-container form button:hover {
+            color: darkred;
+        }
+
+        .message-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .message-container h2 {
+            color: #007bff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .message-container ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .message-container ul li {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #f9f9f9;
+        }
+
+        .message-container ul li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .message-container form {
+            display: inline;
+        }
+
+        .message-container form button {
+            color: red;
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .message-container form button:hover {
+            color: darkred;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
+    <div class="header">
         <h1>Farmer Dashboard</h1>
-        <br>
-        <h3>Total Earning: {{ total_earning }}</h3>
-        <form action="/add_listing" method="post" enctype="multipart/form-data">
-            <label for="product">Product:</label>
-            <input type="text" id="product" name="product" required>
-
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required>
-
-            <label for="unit">Quantity (Unit):</label>
-            <input type="text" id="unit" name="unit" required>
-
-            <label for="price">Price(₹) per Quantity:</label>
-            <input type="number" id="price" name="price" required>
-
-            <label for="image">Image:</label>
-            <input type="file" id="image" name="image" accept="image/*" required>
-
-            <input type="submit" value="Add Listing">
-        </form>
-        <br>
-        <p><a href="/logout">Logout</a></p>
+        <div>
+            <span class="earnings">Total Earnings: {{ total_earning }}</span>
+            <button class="messages-button" onclick="location.href='/check_messages'">Check Messages</button>
+        </div>
     </div>
-    <div class="product-list-container">
-        <h2>Product List</h2>
-        <ul>
-            {% for product in products %}
-            <li>
-                <div>
-                    <strong>Product Name:</strong> {{ product.product_name }} <br>
-                    <strong>Price:</strong> ₹{{ product.price }} <br>
-                    <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
-                </div>
-                <!-- Add any other product details you want to display -->
-                <div>
-                    <!-- Add X button -->
-                    <form action="/remove_listing" method="POST" style="display: inline;">
-                        <input type="hidden" name="product_id" value="{{ product.product_id }}">
-                        <button type="submit" style="color: red;">X</button>
-                    </form>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <br><br>
-    {% if messages %}
-        <div class="message-container">
-            <h2>Messages</h2>
+    <div class="container">
+        <div class="form-container">
+            <h2>Add New Listing</h2>
+            <form action="/add_listing" method="post" enctype="multipart/form-data">
+                <label for="product">Product:</label>
+                <input type="text" id="product" name="product" required>
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
+
+                <label for="unit">Quantity (Unit):</label>
+                <input type="text" id="unit" name="unit" required>
+
+                <label for="price">Price(₹) per Quantity:</label>
+                <input type="number" id="price" name="price" required>
+
+                <label for="image">Image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+
+                <input type="submit" value="Add Listing">
+            </form>
+        </div>
+        <div class="product-list-container">
+            <h2>Current Products</h2>
             <ul>
-                {% for message in messages %}
+                {% for product in products %}
                 <li>
-                    <strong>From:</strong> {{ message.sender.user_name }} <br>
-                    <strong>Subject:</strong> {{ message.subject }} <br>
-                    <p>{{ message.body }}</p>
-                    <form action="/delete_message" method="POST" style="display: inline;">
-                        <input type="hidden" name="message_id" value="{{ message.id }}">
-                        <button type="submit" style="color: red;">Delete</button>
-                    </form>
+                    <div>
+                        <strong>Product Name:</strong> {{ product.product_name }} <br>
+                        <strong>Price:</strong> ₹{{ product.price }} <br>
+                        <strong>Quantity:</strong> {{ product.quantity }} {{ product.unit }}<br>
+                    </div>
+                    <div>
+                        <form action="/remove_listing" method="POST">
+                            <input type="hidden" name="product_id" value="{{ product.product_id }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
+    </div>
+    {% if messages %}
+    <div class="message-container">
+        <h2>Messages</h2>
+        <ul>
+            {% for message in messages %}
+            <li>
+                <strong>From:</strong> {{ message.sender.user_name }} <br>
+                <strong>Subject:</strong> {{ message.subject }} <br>
+                <p>{{ message.body }}</p>
+                <form action="/delete_message" method="POST">
+                    <input type="hidden" name="message_id" value="{{ message.id }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
     {% endif %}
-
 </body>
 </html>
