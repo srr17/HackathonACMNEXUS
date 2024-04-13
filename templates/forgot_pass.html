@@ -7,19 +7,6 @@
     <link rel="stylesheet" href="../static/login/styles.css">
     <style>
         /* Styles for the popup */
-        body, html {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         .popup-container {
             display: none;
             position: fixed;
@@ -29,9 +16,6 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .popup-box {
@@ -39,9 +23,10 @@
             width: 300px;
             max-width: 90%;
             background-color: #fff;
-            border-radius: 20px; /* Increased border-radius for smoother corners */
+            border-radius: 12px; /* Increased border-radius for smoother corners */
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            margin: 100px auto;
             text-align: center;
         }
 
@@ -58,6 +43,18 @@
             cursor: pointer;
             font-size: 1.2em;
             color: #666;
+        }
+
+        /* Added spacing between label and input */
+        label {
+            margin-bottom: 10px;
+        }
+
+        input[type="phone"] {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
@@ -87,7 +84,7 @@
 
 <script>
     function showPopup() {
-        document.getElementById('popupContainer').style.display = 'flex';
+        document.getElementById('popupContainer').style.display = 'block';
         setTimeout(hidePopup, 2000); // Automatically hide after 2 seconds (adjust as needed)
     }
 
