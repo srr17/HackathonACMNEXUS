@@ -1,6 +1,3 @@
-from cgi import print_exception
-from crypt import methods
-from email import message
 from typing import List
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
@@ -8,8 +5,6 @@ from datetime import datetime
 from flask_bcrypt import Bcrypt
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from sqlalchemy import delete
-from flask import jsonify
 from werkzeug.utils import secure_filename
 import os
 
@@ -26,11 +21,17 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(20), nullable=False)
     user_type = db.Column(db.String(60), nullable=False)
+    phone = db.Column(db.Integer, nullable=False)
+    address = db.Column(db.String(30), nullable=False)
+    pincode = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, user_name: str, user_type: str) -> None:
+    def __init__(self, user_name: str, user_type: str, phone: int, address:str, pincode: int) -> None:
         self.user_id=int(datetime.timestamp(datetime.now()))
         self.user_name=user_name
         self.user_type=user_type
+        self.phone=phone
+        self.address=address
+        self.pincode=pincode
 
 
     def __repr__(self):
@@ -185,6 +186,9 @@ def signup():
         return render_template('signup.html')
     username = request.form['username']
     password = request.form['password']
+    phone = int(request.form['phone_number'])
+    address = request.form['address']
+    pin = int(request.form['pin'])
     hashed_password = bcrypt.generate_password_hash(password=password).decode('utf-8')
 
     user_type = request.form['user_type']
@@ -198,7 +202,7 @@ def signup():
         return render_template('signup.html')
 
     # Create a new user
-    new_user = User(user_name=username, user_type=user_type)
+    new_user = User(user_name=username, user_type=user_type, phone=phone, address=address, pincode=pin)
     user_creds = UserCredential(user_id=new_user.user_id, hashed_password=hashed_password)
 
     # Add the new user to the database
